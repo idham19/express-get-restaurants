@@ -5,7 +5,9 @@ const db = require("../db/connection");
 
 //TODO: Create your GET Request Route Below: 
 
+app.get("/restaurants",async(request,response)=>{
+  const findAllRestaurants = await Restaurant.findAll();
+ return response.json(findAllRestaurants);
 
-
-
+})
 module.exports = app;
