@@ -49,4 +49,20 @@ app.put("/restaurants/:id", async (req, res) => {
     res.status(500).json({ error: "Inter server error" });
   }
 });
+
+//delet Method
+app.delete("/restaurants/:id", async (req, res) => {
+  try {
+    const restaurantId = req.params.id;
+    const findRestaurant = await Restaurant.findByPk(restaurantId);
+
+    await findRestaurant.destroy();
+
+    const allRestaurant = await Restaurant.findAll();
+    res.status(200).json(allRestaurant);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = app;
