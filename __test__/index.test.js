@@ -40,4 +40,20 @@ describe("Restaurants Request", () => {
     expect(response.body.cuisine).toEqual(newRestaurant.cuisine);
     expect(response.body.location).toEqual(newRestaurant.location);
   });
+
+  //Put method should update a restaurant data
+  test("Put method should update a restaurant", async () => {
+    const mockData = {
+      name: "Aghroume",
+      location: "Philadelphia",
+      cuisine: "Five Start restaurant",
+    };
+    const restaurantId = 2;
+    const response = await request(app)
+      .put(`/restaurants/${restaurantId}`)
+      .send(mockData);
+    expect(response.body.name).toBe(mockData.name);
+    expect(response.body.cuisine).toBe(mockData.cuisine);
+    expect(response.body.location).toBe(mockData.location);
+  });
 });

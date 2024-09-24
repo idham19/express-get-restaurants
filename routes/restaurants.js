@@ -43,7 +43,7 @@ router.put("/:id", async (req, res) => {
     await restaurantToUpdate.update(updatedRestaurantData);
 
     const allRestaurants = await Restaurant.findAll();
-    res.status(200).json(allRestaurants);
+    res.status(200).json(restaurantToUpdate);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Inter server error" });
