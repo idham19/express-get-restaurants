@@ -25,7 +25,7 @@ router.post("/", async (req, res, next) => {
 
     const findAllrestaurant = await Restaurant.findAll();
 
-    res.status(201).json(findAllrestaurant);
+    res.status(201).json(newRestaurant);
   } catch (error) {
     console.error(error);
     next(error);
