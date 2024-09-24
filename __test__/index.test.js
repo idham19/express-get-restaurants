@@ -56,4 +56,22 @@ describe("Restaurants Request", () => {
     expect(response.body.cuisine).toBe(mockData.cuisine);
     expect(response.body.location).toBe(mockData.location);
   });
+
+  test("delete methode should remove a restaurant from db", async () => {
+    const restaurantId = 1;
+    const createRestaurant = await request(app)
+      .post("/restaurants")
+      .send({
+        name: "takfarinas",
+        cuisine: "seksou",
+        location: "mekla",
+      })
+      .expect(201)
+      .then((res) => res.body);
+
+    const deleteRestaurant = await request(app)
+      .delete(`/restaurants/${createRestaurant.id}`)
+      .expect(200);
+
+  });
 });
