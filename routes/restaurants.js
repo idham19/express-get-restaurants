@@ -21,15 +21,21 @@ router.get("/:id", async (req, res) => {
 // post Mehtod
 router.post(
   "/",
-  [check("name").not().isEmpty().trim()],
-  [check("location").not().isEmpty().trim()],
-  [check("cuisine").not().isEmpty().trim()],
+  [check("name").not().isEmpty().trim().withMessage("Name is required")],
+  [
+    check("location")
+      .not()
+      .isEmpty()
+      .trim()
+      .withMessage("Location is required"),
+  ],
+  [check("cuisine").not().isEmpty().trim().withMessage("Cuisine is required")],
 
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        res.json({ error: errors.array() });
+        res.status(400).json({ errors: errors.array() });
       }
       const newRestaurant = await Restaurant.create(req.body);
 
@@ -39,7 +45,6 @@ router.post(
     } catch (error) {
       console.error(error);
       next(error);
-      res.status(500).send({ error: "Internal server error" });
     }
   }
 );

@@ -40,6 +40,39 @@ describe("Restaurants Request", () => {
     expect(response.body.cuisine).toEqual(newRestaurant.cuisine);
     expect(response.body.location).toEqual(newRestaurant.location);
   });
+  test("post method With missing Name should return an error", async () => {
+    const newRestaurant = {
+      location: "Texas",
+      cuisine: "FastFood",
+    };
+    const response = await request(app)
+      .post("/restaurants")
+      .send(newRestaurant)
+      .expect(400);
+    expect(response.body.errors[0].msg).toBe("Name is required");
+  });
+  test("post method With missing Location should return an error", async () => {
+    const newRestaurant = {
+      name: "Texas",
+      cuisine: "FastFood",
+    };
+    const response = await request(app)
+      .post("/restaurants")
+      .send(newRestaurant)
+      .expect(400);
+    expect(response.body.errors[0].msg).toBe("Location is required");
+  });
+  test("post method With missing Cuisine should return an error", async () => {
+    const newRestaurant = {
+      name: "FastFood",
+      location: "Texas",
+    };
+    const response = await request(app)
+      .post("/restaurants")
+      .send(newRestaurant)
+      .expect(400);
+    expect(response.body.errors[0].msg).toBe("Cuisine is required");
+  });
 
   //Put method should update a restaurant data
   test("Put method should update a restaurant", async () => {
@@ -72,6 +105,5 @@ describe("Restaurants Request", () => {
     const deleteRestaurant = await request(app)
       .delete(`/restaurants/${createRestaurant.id}`)
       .expect(200);
-
   });
 });
