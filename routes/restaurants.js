@@ -1,7 +1,7 @@
 const express = require("express");
 const { Router } = require("express");
 const Restaurant = require("../models/index");
-
+const { check, validationResult } = require("express-validator");
 const router = Router();
 
 router.get("/", async (request, response) => {
@@ -19,19 +19,30 @@ router.get("/:id", async (req, res) => {
 });
 
 // post Mehtod
-router.post("/", async (req, res, next) => {
-  try {
-    const newRestaurant = await Restaurant.create(req.body);
+router.post(
+  "/",
+  [check("name").not().isEmpty().trim()],
+  [check("location").not().isEmpty().trim()],
+  [check("cuisine").not().isEmpty().trim()],
 
-    const findAllrestaurant = await Restaurant.findAll();
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.json({ error: errors.array() });
+      }
+      const newRestaurant = await Restaurant.create(req.body);
 
-    res.status(201).json(newRestaurant);
-  } catch (error) {
-    console.error(error);
-    next(error);
-    res.status(500).send({ error: "Internal server error" });
+      const findAllrestaurant = await Restaurant.findAll();
+
+      res.status(201).json(newRestaurant);
+    } catch (error) {
+      console.error(error);
+      next(error);
+      res.status(500).send({ error: "Internal server error" });
+    }
   }
-});
+);
 
 //update Method
 router.put("/:id", async (req, res) => {
