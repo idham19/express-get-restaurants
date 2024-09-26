@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
 // post Mehtod
 router.post(
   "/",
-  [check("name").not().isEmpty().trim().withMessage("Name is required")],
+  [check("name").not().isEmpty().trim().withMessage("Name is required").isLength({min:10,max:30}).withMessage("name length should be at least 10 and max 30")],
   [
     check("location")
       .not()

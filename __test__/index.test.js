@@ -28,7 +28,7 @@ describe("Restaurants Request", () => {
   });
   test("post method new restaurant should be added", async () => {
     const newRestaurant = {
-      name: "AppleBees",
+      name: "AppleBeesbeees",
       location: "Texas",
       cuisine: "FastFood",
     };
@@ -53,7 +53,7 @@ describe("Restaurants Request", () => {
   });
   test("post method With missing Location should return an error", async () => {
     const newRestaurant = {
-      name: "Texas",
+      name: "Texasfsfsfsfs",
       cuisine: "FastFood",
     };
     const response = await request(app)
@@ -64,7 +64,7 @@ describe("Restaurants Request", () => {
   });
   test("post method With missing Cuisine should return an error", async () => {
     const newRestaurant = {
-      name: "FastFood",
+      name: "FastFooddsads",
       location: "Texas",
     };
     const response = await request(app)
@@ -72,6 +72,20 @@ describe("Restaurants Request", () => {
       .send(newRestaurant)
       .expect(400);
     expect(response.body.errors[0].msg).toBe("Cuisine is required");
+  });
+  test("post method  name should at least 10 and max 30", async () => {
+    const newRestaurant = {
+      name: "Fas",
+      location: "Texas",
+      cuisine:"dsfds",
+    };
+    const response = await request(app)
+      .post("/restaurants")
+      .send(newRestaurant)
+      .expect(400);
+    expect(response.body.errors[0].msg).toBe(
+      "name length should be at least 10 and max 30"
+    );
   });
 
   //Put method should update a restaurant data
